@@ -1,0 +1,42 @@
+name: Run Python Script with HTML
+
+on:
+  push:
+    branches:
+      - main  # تأكد من تغيير الفرع حسب الحاجة
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest  # يمكنك تغيير النظام حسب الحاجة
+    
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. Set up Python
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # تأكد من وجود ملف requirements.txt في المشروع
+
+      # 4. Run the Python script
+      - name: Run Python script
+        run: |
+          python your_script.py  # قم بتغيير اسم السكربت هنا
+
+      # 5. Optionally, you can upload the HTML file as an artifact
+      - name: Upload HTML file
+        uses: actions/upload-artifact@v2
+        with:
+          name: output-html
+          path: test.html  # قم بتغيير المسار إذا كنت تستخدم مسارًا مختلفًا
