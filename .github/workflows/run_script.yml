@@ -3,15 +3,15 @@ name: Run Python Script with HTML
 on:
   push:
     branches:
-      - main  # تأكد من تغيير الفرع حسب الحاجة
+      - main  # اختر الفرع الذي تريد تشغيل Action عليه
   pull_request:
     branches:
       - main
 
 jobs:
   run-python-script:
-    runs-on: ubuntu-latest  # يمكنك تغيير النظام حسب الحاجة
-    
+    runs-on: ubuntu-latest  # اختيار البيئة (يمكنك استخدام Ubuntu-24.04 إذا أردت التحديث للإصدار الجديد)
+
     steps:
       # 1. Checkout the repository
       - name: Checkout code
@@ -27,16 +27,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # تأكد من وجود ملف requirements.txt في المشروع
+          pip install -r requirements.txt  # تأكد من أن لديك هذا الملف في المشروع
 
       # 4. Run the Python script
       - name: Run Python script
         run: |
-          python your_script.py  # قم بتغيير اسم السكربت هنا
+          python your_script.py  # استبدل "your_script.py" بالاسم الفعلي للسكربت
 
       # 5. Optionally, you can upload the HTML file as an artifact
       - name: Upload HTML file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # تم تحديث الإصدار إلى v3
         with:
           name: output-html
-          path: test.html  # قم بتغيير المسار إذا كنت تستخدم مسارًا مختلفًا
+          path: test.html  # استبدل بالمسار الفعلي للملف HTML إذا كان مختلفًا
