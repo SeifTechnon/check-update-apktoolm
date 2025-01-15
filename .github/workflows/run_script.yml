@@ -1,16 +1,13 @@
-name: Run Python Script with HTML
+name: Run Python Script and Commit Changes
 
 on:
   push:
     branches:
       - main  # اختر الفرع الذي تريد تشغيل Action عليه
-  pull_request:
-    branches:
-      - main
 
 jobs:
   run-python-script:
-    runs-on: ubuntu-latest  # اختيار البيئة (يمكنك استخدام Ubuntu-24.04 إذا أردت التحديث للإصدار الجديد)
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout the repository
@@ -32,11 +29,15 @@ jobs:
       # 4. Run the Python script
       - name: Run Python script
         run: |
-          python test.py  # استبدل "your_script.py" بالاسم الفعلي للسكربت
+          python test.py  # استبدل "test.py" بالاسم الفعلي للسكربت
 
-      # 5. Optionally, you can upload the HTML file as an artifact
-      - name: Upload HTML file
-        uses: actions/upload-artifact@v3  # تم تحديث الإصدار إلى v3
-        with:
-          name: output-html
-          path: test.html  # استبدل بالمسار الفعلي للملف HTML إذا كان مختلفًا
+      # 5. Commit the changes to GitHub
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add test.html
+          git commit -m "Update version in test.html"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
