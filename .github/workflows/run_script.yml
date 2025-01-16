@@ -3,45 +3,37 @@ name: Run Python Script and Commit Changes
 on:
   push:
     branches:
-      - main  # اختر الفرع الذي تريد تشغيل Action عليه
+      - main
 
 jobs:
   run-python-script:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Set up Python
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # تأكد من أن لديك هذا الملف في المشروع
+          pip install -r requirements.txt
 
-      # 4. Run the Python script
       - name: Run Python script
         run: |
-          python test.py  # استبدل "test.py" بالاسم الفعلي للسكربت
+          python test.py
 
-      # 5. Commit the changes to GitHub
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # تغيير عنوان الـ remote مع الـ GITHUB_TOKEN
           git remote set-url origin https://$GITHUB_TOKEN@github.com/SeifTechnon/check-update-apktoolm.git
-          
           git add test.html
           git commit -m "Update version in test.html"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
